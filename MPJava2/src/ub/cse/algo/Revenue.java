@@ -7,6 +7,28 @@ import java.util.HashMap;
  * Class that contains formulas for computing the solution's revenue
  */
 class Revenue {
+
+    //TODO
+    /**
+     * returns a list of paths sorted from most profitable to least
+     * @param clients: lsit of clients
+     * @param paths: list of paths to each client
+     * @param minPaths: hashmap of min paths that can be used to calculate d(c) by doing minPaths.get(c).size()
+     * @return A lsit of paths from most profitable to least
+     */
+    public ArrayList<ArrayList<Integer>> pathRevenues(ArrayList<Integer> clients, ArrayList<ArrayList<Integer>> paths, HashMap<Integer, ArrayList<Integer>> minPaths){
+        ArrayList<ArrayList<Integer>> sortedPaths = null;
+
+        return sortedPaths;
+    }
+
+    //helper function that calculates revenue of a single path
+    //should return 0 if the paths distance > client threshold * minDelay
+//    public Integer pathRevenue(ArrayList<Integer> path, int minDelay){
+//        int revenue = 0;
+//
+//        return revenue;
+//    }
     /**
      * Static method that will compute the revenue generated from
      * the given solution given the boolean variables
