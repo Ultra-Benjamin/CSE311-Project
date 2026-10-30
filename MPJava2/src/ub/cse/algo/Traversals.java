@@ -58,7 +58,9 @@ class Traversals {
             Initialize the prior array with -1 for storing the node
             that is before the current one in the shortest paths
          */
-        int[] priors = new int[graph.size()];
+
+        int maxIndex = Collections.max(graph.keySet());
+        int[] priors = new int[maxIndex+1];
         Arrays.fill(priors, -1);
 
         // Run BFS, finding the nodes parent in the shortest path

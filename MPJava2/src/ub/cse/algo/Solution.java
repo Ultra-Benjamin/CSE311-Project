@@ -1,6 +1,7 @@
 package ub.cse.algo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static ub.cse.algo.Traversals.bandwidthBFS;
 
@@ -36,7 +37,7 @@ public class Solution {
         /* TODO: Your solution goes here */
         sol.paths = bandwidthBFS(this.clients, this.graph, this.bandwidths);
         sol.bandwidths = this.bandwidths;
-        sol.priorities = null;
+        sol.priorities = new HashMap<>();
         return sol;
     }
 }
