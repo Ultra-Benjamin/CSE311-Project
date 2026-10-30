@@ -156,4 +156,27 @@ class Traversals {
         }
         return out;
     }
+
+
+    //keys correspond to a router,
+    //values are a list of packets at the router given a certain index/time
+    static HashMap<Integer, ArrayList<ArrayList<Integer>>> routerTraffic (HashMap<Integer, ArrayList<Integer>> bestPaths){
+        HashMap<Integer, ArrayList<ArrayList<Integer>>> out = new HashMap<>();
+
+        for(Integer client : bestPaths.keySet()){
+            ArrayList<Integer> path = bestPaths.get(client);
+            for(Integer time=0; time < path.size(); time++){
+                Integer router = path.get(time);
+                out.putIfAbsent(router, new ArrayList<>());
+
+                ArrayList<ArrayList<Integer>> timeAndPackets = out.get(router);
+                while(timeAndPackets.size() <= time){
+                    timeAndPackets.add(new ArrayList<>());
+                }
+                timeAndPackets.get(time).add(client);
+            }
+        }
+        return out;
+    }
+
 }
