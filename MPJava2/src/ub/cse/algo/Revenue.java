@@ -2,6 +2,10 @@ package ub.cse.algo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
+
+import static ub.cse.algo.Traversals.getClient;
+
 
 /**
  * Class that contains formulas for computing the solution's revenue
@@ -11,24 +15,41 @@ class Revenue {
     //TODO
     /**
      * returns a list of paths sorted from most profitable to least
-     * @param clients: lsit of clients
+     * @param clients: List of client objects, can be used to get client thresholds
      * @param paths: list of paths to each client
      * @param minPaths: hashmap of min paths that can be used to calculate d(c) by doing minPaths.get(c).size()
      * @return A lsit of paths from most profitable to least
      */
-    public ArrayList<ArrayList<Integer>> pathRevenues(ArrayList<Integer> clients, ArrayList<ArrayList<Integer>> paths, HashMap<Integer, ArrayList<Integer>> minPaths){
-        ArrayList<ArrayList<Integer>> sortedPaths = null;
+    static TreeSet<ArrayList<Integer>> pathRevenues( ArrayList<Client> clients, ArrayList<ArrayList<Integer>> paths, HashMap<Integer, ArrayList<Integer>> minPaths){
+        TreeSet<ArrayList<Integer>> sortedPaths = new TreeSet<>((a, b) ->
+            {Integer comparison = Integer.compare(
+                pathRevenue(a, clients, minPaths.get(a.get(a.size()-1)).size()),
+                pathRevenue(b, clients, minPaths.get(b.get(b.size()-1)).size()));
+            if(comparison == 0){
+                return Integer.compare(a.get(a.size()-1), b.get(b.size()-1));
+            }
+            return -comparison;
+        });
 
+        for(ArrayList<Integer> path : paths){
+            sortedPaths.add(path);
+        }
         return sortedPaths;
     }
 
     //helper function that calculates revenue of a single path
     //should return 0 if the paths distance > client threshold * minDelay
-//    public Integer pathRevenue(ArrayList<Integer> path, int minDelay){
-//        int revenue = 0;
-//
-//        return revenue;
-//    }
+    static Integer pathRevenue(ArrayList<Integer> path, ArrayList<Client> clients, int minDelay){
+        int revenue = 0;
+        Client client = getClient(clients ,path.get(path.size()-1));
+        float threshold = (client.alpha) * minDelay;
+
+        if(path.size() > threshold){
+            return revenue;
+        }
+        revenue = client.payment;
+        return revenue;
+    }
     /**
      * Static method that will compute the revenue generated from
      * the given solution given the boolean variables

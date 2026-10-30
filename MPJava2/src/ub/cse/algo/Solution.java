@@ -2,6 +2,8 @@ package ub.cse.algo;
 
 import java.util.ArrayList;
 
+import static ub.cse.algo.Traversals.bandwidthBFS;
+
 public class Solution {
 
     private Info info;
@@ -27,9 +29,14 @@ public class Solution {
      *
      * @return SolutionObject containing the paths, priorities and bandwidths
      */
+
+
     public SolutionObject outputPaths() {
         SolutionObject sol = new SolutionObject();
         /* TODO: Your solution goes here */
+        sol.paths = bandwidthBFS(this.clients, this.graph, this.bandwidths);
+        sol.bandwidths = this.bandwidths;
+        sol.priorities = null;
         return sol;
     }
 }
