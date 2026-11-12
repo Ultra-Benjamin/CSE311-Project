@@ -32,6 +32,7 @@ public class Solution {
         // Initialize the Queue to run BFS and a map to track parents for the paths
         Queue<Integer> queue = new LinkedList<>();
         HashMap<Integer, Integer> distances = new HashMap<>();
+
         // Since the source node is the root, it has no parents: parent = null
         queue.add(contentProvider);
         distances.put(contentProvider, 0);
@@ -68,7 +69,7 @@ public class Solution {
         }
     }
 
-    private ArrayList<Integer> findValidPath(int _startNode, int _endNode, double maxDelay, HashMap<Integer, Integer> usage){
+    private ArrayList<Integer> findValidPath(int _startNode, int _endNode, double maxDelay, int[] usage){
         int num_of_nodes = this.graph.size();
         int[] dist = new int[num_of_nodes];
         int[] parents = new int[num_of_nodes];
@@ -99,6 +100,7 @@ public class Solution {
 
             int tpackets = packets[node] + 1;
             if (tpackets > maxDelay) {
+                //this.bandwidths.set(node, (int) (this.bandwidths.get(node) + (tpackets-maxDelay)));
                 continue;
             }
 
@@ -108,7 +110,7 @@ public class Solution {
                     continue;
                 }
                 int bandwidth = bandwidths.get(child);
-                int used = usage.getOrDefault(child, 0);
+                int used = usage[child];
 
                 float congestion = 0f;
 
@@ -148,15 +150,15 @@ public class Solution {
         List<Client> sortedClients = new ArrayList<>(this.info.clients);
         sortedClients.sort((c1, c2)-> Float.compare(c2.payment, c1.payment));
         // Copy list of bandwiths into a list to manipulate
-        HashMap<Integer, Integer> usage = new HashMap<>();
+        int[] usage = new int[this.graph.size()];
         // Run Dijkstra's for each client filtering out any nodes whose remaining capacity less than or equal to zero
         // If a path is found and the delay is less than or equal to the maximum allowed delay before incurring
         // a penalty:
         //      1. Add a path for that solution found
         //      2. Decrement node capacities along the path by 1
         for (Client client: sortedClients){
-            Integer d_c = baseDistances.get(client.id);
-            if (d_c == null) continue;
+            int d_c = baseDistances.get(client.id);
+            if (d_c == -1) continue;
             double maxDelay = client.alpha * d_c;
             sol.priorities.put(client.id, client.priority);
             ArrayList<Integer> path = findValidPath(this.graph.contentProvider, client.id, maxDelay, usage);
@@ -164,7 +166,7 @@ public class Solution {
                 L.put(client.id, path);
                 for (int i = 1; i < path.size() - 1; i++) {
                     int router =  path.get(i);
-                    usage.put(router, usage.getOrDefault(router, 0) + 1);
+                    usage[router]++;
                 }
             }
         }
